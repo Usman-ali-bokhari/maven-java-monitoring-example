@@ -1,0 +1,32 @@
+name: CI/CD
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Build Java app with Maven
+        run: |
+          cd maven-java-monitoring-example
+          mvn clean install
+      - name: Build Docker image
+        run: |
+          cd maven-java-monitoring-example
+          docker build -t usmanbokhari/maven-java-monitoring-example:latest .
+      - name: Push Docker image to Docker Hub
+      
+        env:
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+        run: |
+          cd maven-java-monitoring-example
+          echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
+          docker push $DOCKER_USERNAME/maven-java-monitoring-example:latest
