@@ -15,11 +15,11 @@ jobs:
 
       - name: Build Java app with Maven
         run: |
-          cd maven-java-monitoring-example
+          cd javaapp
           mvn clean install
       - name: Build Docker image
         run: |
-          cd maven-java-monitoring-example
+          cd javaapp
           docker build -t usmanbokhari/assignment_3:javaapp .
       - name: Push Docker image to Docker Hub
       
